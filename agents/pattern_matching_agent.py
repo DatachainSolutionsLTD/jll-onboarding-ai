@@ -11,9 +11,12 @@ BASE_DIR = "/Users/sangeetha/Desktop/jll-onboarding-ai"
 MODEL_PATH = os.path.join(BASE_DIR, "models") """
 
 
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MODEL_PATH = os.path.join(BASE_DIR, "models", "fm_bundle_classifier_xgboost.pkl")
+
+print("Loading model from:", MODEL_PATH)
 
 model = joblib.load(MODEL_PATH)
 # -------------------------------------------------
