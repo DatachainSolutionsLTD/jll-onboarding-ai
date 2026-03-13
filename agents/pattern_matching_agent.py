@@ -5,11 +5,17 @@ import os
 # -------------------------------------------------
 # PROJECT PATHS
 # -------------------------------------------------
-
+"""
 BASE_DIR = "/Users/sangeetha/Desktop/jll-onboarding-ai"
 
-MODEL_PATH = os.path.join(BASE_DIR, "models")
+MODEL_PATH = os.path.join(BASE_DIR, "models") """
 
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MODEL_PATH = os.path.join(BASE_DIR, "models", "fm_bundle_classifier_xgboost.pkl")
+
+model = joblib.load(MODEL_PATH)
 # -------------------------------------------------
 # LOAD MODEL + ENCODERS
 # -------------------------------------------------
