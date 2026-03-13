@@ -5,29 +5,24 @@ import os
 # -------------------------------------------------
 # PROJECT PATHS
 # -------------------------------------------------
-"""
-BASE_DIR = "/Users/sangeetha/Desktop/jll-onboarding-ai"
-
-MODEL_PATH = os.path.join(BASE_DIR, "models") """
-
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MODEL_PATH = os.path.join(BASE_DIR, "models", "fm_bundle_classifier_xgboost.pkl")
+MODEL_DIR = os.path.join(BASE_DIR, "models")
 
-print("Loading model from:", MODEL_PATH)
+MODEL_FILE = os.path.join(MODEL_DIR, "fm_bundle_classifier_xgboost.pkl")
+ENCODER_FILE = os.path.join(MODEL_DIR, "feature_encoders.pkl")
+LABEL_FILE = os.path.join(MODEL_DIR, "label_encoder.pkl")
 
-model = joblib.load(MODEL_PATH)
+print("Loading model from:", MODEL_FILE)
+
 # -------------------------------------------------
 # LOAD MODEL + ENCODERS
 # -------------------------------------------------
 
-print("Loading model...")
-
-model = joblib.load(os.path.join(MODEL_PATH, "fm_bundle_classifier_xgboost.pkl"))
-encoders = joblib.load(os.path.join(MODEL_PATH, "feature_encoders.pkl"))
-label_encoder = joblib.load(os.path.join(MODEL_PATH, "label_encoder.pkl"))
+model = joblib.load(MODEL_FILE)
+encoders = joblib.load(ENCODER_FILE)
+label_encoder = joblib.load(LABEL_FILE)
 
 print("Model loaded successfully")
 
@@ -46,14 +41,12 @@ FEATURE_COLUMNS = [
     "installed_app_count"
 ]
 
-
 # -------------------------------------------------
 # PREDICTION FUNCTION
 # -------------------------------------------------
 
 def predict_bundle(user_profile):
 
-    # Keep only the features used during training
     filtered_data = {k: user_profile.get(k) for k in FEATURE_COLUMNS}
 
     df = pd.DataFrame([filtered_data])
