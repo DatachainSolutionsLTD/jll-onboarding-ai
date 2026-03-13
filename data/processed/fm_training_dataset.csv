@@ -1,0 +1,15 @@
+role_title,is_manager,function,region,country,device_platform,ram,installed_app_count,bundle_tier
+"Executive Director, Digital Transformation",No,5501_IT - Deskside,AMER,United Kingdom,Mac,8,47,BUNDLE_3
+Principal IT Operations,No,5501_IT - Deskside,EMEA,United States of America,Windows,16,34,BUNDLE_2
+Account Director,No,2000_RG - Revenue Generator,APAC,United States of America,Linux,8,20,BUNDLE_1
+"Global Head - JBS Operations, Governance and Optimization",No,4000_Bus Services - Executive,AMER,United States of America,Mac,32,11,BUNDLE_1
+"Exec Director, Co-Lead, Transaction Management, Americas",No,3031_SD - Global Ops Support,APAC,United States of America,Linux,64,30,BUNDLE_2
+"EVP, Regional Operations Manager",Yes,2044_RG - Business Leadership,AMER,United States of America,Linux,32,13,BUNDLE_1
+"Senior Accounting Manager, REMS",Yes,3016_SD - Client Accounting,AMER,United States of America,Mac,16,49,BUNDLE_2
+"Executive Managing Director, Brokerage",No,2000_RG - Revenue Generator,APAC,United States of America,Mac,8,26,BUNDLE_1
+"Managing Director, Brokerage",No,2000_RG - Revenue Generator,APAC,United States of America,Mac,32,28,BUNDLE_1
+"Managing Director, Life Sciences",No,2000_RG - Revenue Generator,APAC,United States of America,Linux,8,29,BUNDLE_1
+"SVP, General Manager",Yes,2000_RG - Revenue Generator,AMER,United States of America,Mac,16,11,FM_BASE
+Director Information Systems Engineering,No,5506_IT - Enterprise Finance,AMER,United States of America,Linux,64,44,BUNDLE_2
+"Sr. Director, Programs",No,2044_RG - Business Leadership,APAC,United States of America,Linux,32,12,BUNDLE_1
+"Executive Managing Director, Brokerage",No,2000_RG - Revenue Generator,APAC,United States of America,Mac,16,21,BUNDLE_1
