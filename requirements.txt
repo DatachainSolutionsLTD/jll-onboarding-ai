@@ -16,3 +16,4 @@ xgboost
 openai
 requests
 chromadb
+altair==4.2.2
