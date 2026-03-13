@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-BACKEND_URL = "http://127.0.0.1:8000/onboard_employee"
+BACKEND_URL = "https://jll-onboarding-ai-1.onrender.com/onboard_employee"
 
 st.set_page_config(page_title="JLL AI Onboarding Portal", layout="wide")
 
