@@ -18,3 +18,4 @@ chromadb
 altair==4.2.2
 streamlit>=1.36.0
 standard-imghdr
+openpyxl
