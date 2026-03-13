@@ -20,16 +20,12 @@ body {
     background-color: white;
 }
 
-/* Header banner */
-
 .header-banner {
     background-color: #d71920;
     height: 6px;
     width: 100%;
     margin-bottom: 20px;
 }
-
-/* Section panel */
 
 .section-panel {
     border: 1px solid #e5e7eb;
@@ -50,8 +46,6 @@ body {
     padding: 18px;
 }
 
-/* Metrics */
-
 .metric-label {
     font-size: 13px;
     font-weight: 500;
@@ -64,8 +58,6 @@ body {
     color: #111827;
     margin-bottom: 12px;
 }
-
-/* Buttons */
 
 .stButton>button {
     background-color: #d71920;
@@ -81,8 +73,6 @@ body {
     background-color: #b5151a;
 }
 
-/* Bundle boxes */
-
 .bundle-box {
     padding: 8px 14px;
     border-radius: 6px;
@@ -90,8 +80,6 @@ body {
     margin-right: 6px;
     font-size: 13px;
 }
-
-/* Agent trace */
 
 .agent-trace {
     background-color: #f9fafb;
@@ -212,25 +200,31 @@ with left:
 
     if st.button("Generate Recommendation"):
 
-        try:
+        with st.spinner("Running AI agents and generating recommendation..."):
 
-            response = requests.post(BACKEND_URL, json=payload)
+            try:
 
-            if response.status_code == 200:
+                response = requests.post(
+                    BACKEND_URL,
+                    json=payload,
+                    timeout=60
+                )
 
-                result = response.json()
+                if response.status_code == 200:
 
-                st.session_state.result = result
-                st.session_state.selected_bundle = result.get("recommended_bundle")
+                    result = response.json()
 
-                st.success("Recommendation generated")
+                    st.session_state.result = result
+                    st.session_state.selected_bundle = result.get("recommended_bundle")
 
-            else:
-                st.error("Backend error")
+                    st.success("Recommendation generated")
 
-        except Exception as e:
-            st.error("Connection error")
-            st.write(e)
+                else:
+                    st.error("Backend error")
+
+            except Exception as e:
+                st.error("Connection error")
+                st.write(e)
 
     st.markdown('</div></div>', unsafe_allow_html=True)
 
@@ -279,10 +273,17 @@ if result:
 
         apps = bundle_options.get(selected_bundle, [])
 
-        st.markdown(f'<div class="metric-label">Bundle Size</div><div class="metric-value">{len(apps)} Applications</div>', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="metric-label">Bundle Size</div><div class="metric-value">{len(apps)} Applications</div>',
+            unsafe_allow_html=True
+        )
 
         with st.expander("View bundle contents", expanded=False):
-            for app in apps:
+
+            if len(apps) > 80:
+                st.info(f"Showing first 80 of {len(apps)} applications for performance")
+
+            for app in apps[:80]:
                 st.write("•", app)
 
         st.markdown('</div></div>', unsafe_allow_html=True)
@@ -306,53 +307,61 @@ if result:
 
         if st.button("Create Provisioning Plan"):
 
-            try:
+            with st.spinner("Generating provisioning plan..."):
 
-                override_payload = payload.copy()
-                override_payload["selected_bundle"] = st.session_state.selected_bundle
+                try:
 
-                response = requests.post(BACKEND_URL, json=override_payload)
+                    override_payload = payload.copy()
+                    override_payload["selected_bundle"] = st.session_state.selected_bundle
 
-                if response.status_code == 200:
+                    response = requests.post(
+                        BACKEND_URL,
+                        json=override_payload,
+                        timeout=60
+                    )
 
-                    final = response.json()
+                    if response.status_code == 200:
 
-                    with st.expander("Applications to Install", expanded=False):
-                        for app in final.get("applications", []):
-                            st.write("•", app)
+                        final = response.json()
 
-                    st.markdown('<div class="section-panel"><div class="section-header">Policy Compliance Notes</div><div class="section-body">', unsafe_allow_html=True)
+                        with st.expander("Applications to Install", expanded=False):
 
-                    for note in final.get("compliance_notes", []):
-                        st.write("•", note)
+                            apps = final.get("applications", [])
 
-                    st.markdown('</div></div>', unsafe_allow_html=True)
+                            if len(apps) > 100:
+                                st.info(f"Showing first 100 of {len(apps)} applications")
 
-                    st.markdown('<div class="section-panel"><div class="section-header">AI Decision Rationale</div><div class="section-body">', unsafe_allow_html=True)
+                            for app in apps[:100]:
+                                st.write("•", app)
 
-                    st.write(final.get("explanation"))
+                        st.markdown("### Policy Compliance Notes")
 
-                    st.markdown('</div></div>', unsafe_allow_html=True)
+                        for note in final.get("compliance_notes", []):
+                            st.write("•", note)
 
-                    st.markdown("### Agent Execution Trace")
+                        st.markdown("### AI Decision Rationale")
 
-                    st.markdown("""
-                    <div class="agent-trace">
+                        st.write(final.get("explanation"))
 
-                    ✔ Persona Agent → Persona identified<br>
-                    ✔ ML Prediction Agent → Bundle predicted<br>
-                    ✔ Bundle Knowledge Agent → Retrieved bundle catalog<br>
-                    ✔ Provisioning Agent → Generated provisioning plan<br>
-                    ✔ Policy Compliance Agent → Applied regional policy
+                        st.markdown("### Agent Execution Trace")
 
-                    </div>
-                    """, unsafe_allow_html=True)
+                        st.markdown("""
+                        <div class="agent-trace">
 
-                else:
-                    st.error("Backend error")
+                        ✔ Persona Agent → Persona identified<br>
+                        ✔ ML Prediction Agent → Bundle predicted<br>
+                        ✔ Bundle Knowledge Agent → Retrieved bundle catalog<br>
+                        ✔ Provisioning Agent → Generated provisioning plan<br>
+                        ✔ Policy Compliance Agent → Applied regional policy
 
-            except Exception as e:
-                st.error("Connection error")
-                st.write(e)
+                        </div>
+                        """, unsafe_allow_html=True)
+
+                    else:
+                        st.error("Backend error")
+
+                except Exception as e:
+                    st.error("Connection error")
+                    st.write(e)
 
         st.markdown('</div></div>', unsafe_allow_html=True)
